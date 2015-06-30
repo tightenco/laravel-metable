@@ -1,4 +1,4 @@
-<?php namespace Mmanos\Metable;
+<?php namespace Mmanos\Metable\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
@@ -14,14 +14,14 @@ class MetasCommand extends Command
 	 * @var string
 	 */
 	protected $name = 'laravel-metable:metas';
-	
+
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
 	protected $description = 'Create a migration and model for a metas summary table';
-	
+
 	/**
 	 * Execute the console command.
 	 *
@@ -32,14 +32,14 @@ class MetasCommand extends Command
 		$full_migration_path = $this->createBaseMigration();
 		file_put_contents($full_migration_path, $this->getMigrationStub());
 		$this->info('Migration created successfully!');
-		
+
 		$full_model_path = $this->createBaseModel();
 		file_put_contents($full_model_path, $this->getModelStub());
 		$this->info('Model created successfully!');
-		
-		$this->call('dump-autoload');
+
+		$this->call('optimize');
 	}
-	
+
 	/**
 	 * Return the name of the table to create.
 	 *
@@ -49,7 +49,7 @@ class MetasCommand extends Command
 	{
 		return $this->argument('table') ?: 'metas';
 	}
-	
+
 	/**
 	 * Create a base migration file.
 	 *
@@ -58,12 +58,12 @@ class MetasCommand extends Command
 	protected function createBaseMigration()
 	{
 		$name = 'create_' . $this->tableName() . '_table';
-		
-		$path = $this->laravel['path'].'/database/migrations';
-		
+
+		$path = base_path('database/migrations');
+
 		return $this->laravel['migration.creator']->create($name, $path);
 	}
-	
+
 	/**
 	 * Get the contents of the migration stub.
 	 *
@@ -71,18 +71,18 @@ class MetasCommand extends Command
 	 */
 	protected function getMigrationStub()
 	{
-		$stub = file_get_contents(__DIR__.'/../Mmanos/Metable/Stubs/MetasMigration.stub.php');
-		
+		$stub = file_get_contents(__DIR__.'/../Stubs/MetasMigration.stub.php');
+
 		$stub = str_replace('{{table}}', $this->tableName(), $stub);
 		$stub = str_replace(
 			'{{class}}',
 			'Create' . Str::studly($this->tableName()) . 'Table',
 			$stub
 		);
-		
+
 		return $stub;
 	}
-	
+
 	/**
 	 * Create a base model file.
 	 *
@@ -91,22 +91,22 @@ class MetasCommand extends Command
 	protected function createBaseModel()
 	{
 		$name_parts = explode('_', $this->tableName());
-		
-		$path = $this->laravel['path'].'/models';
-		
+
+		$path = app_path();
+
 		for ($i = 0; $i < (count($name_parts) - 1); $i++) {
 			$path .= '/' . Str::studly(Str::singular($name_parts[$i]));
 		}
-		
+
 		if (count($name_parts) > 1 && !File::exists($path)) {
 			File::makeDirectory($path, 0755, true);
 		}
-		
+
 		$path .= '/' . Str::studly(Str::singular(end($name_parts))) . '.php';
-		
+
 		return $path;
 	}
-	
+
 	/**
 	 * Get the contents of the model stub.
 	 *
@@ -115,7 +115,7 @@ class MetasCommand extends Command
 	protected function getModelStub()
 	{
 		$stub = file_get_contents(__DIR__.'/../Mmanos/Metable/Stubs/MetaModel.stub.php');
-		
+
 		$name_parts = explode('_', $this->tableName());
 		$namespace = '';
 		for ($i = 0; $i < (count($name_parts) - 1); $i++) {
@@ -123,14 +123,14 @@ class MetasCommand extends Command
 		}
 		$namespace = trim($namespace, '\\');
 		$class = Str::studly(Str::singular(end($name_parts)));
-		
+
 		$stub = str_replace('{{namespace}}', empty($namespace) ? '' : " namespace {$namespace};", $stub);
 		$stub = str_replace('{{class}}', $class, $stub);
 		$stub = str_replace('{{table}}', $this->tableName(), $stub);
-		
+
 		return $stub;
 	}
-	
+
 	/**
 	 * Get the console command arguments.
 	 *

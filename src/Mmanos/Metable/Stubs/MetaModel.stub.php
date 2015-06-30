@@ -1,33 +1,33 @@
-<?php{{namespace}}
+<?php {{namespace}}
 
 use Illuminate\Database\Eloquent\Model as Eloquent;
-use Illuminate\Database\Eloquent\SoftDeletingTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class {{class}} extends Eloquent
 {
-	use SoftDeletingTrait;
-	
+	use SoftDeletes;
+
 	/**
-	 * The table name for t his model.
+	 * The table name for this model.
 	 *
 	 * @var string
 	 */
 	protected $table = '{{table}}';
-	
+
 	/**
 	 * The attributes excluded from the model's JSON form.
 	 *
 	 * @var array
 	 */
 	protected $hidden = array('deleted_at');
-	
+
 	/**
 	 * The attributes that aren't mass assignable.
 	 *
 	 * @var array
 	 */
 	protected $guarded = array('id');
-	
+
 	/**
 	 * The dates array.
 	 *

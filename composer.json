@@ -1,6 +1,6 @@
 {
     "name": "mmanos/laravel-metable",
-    "description": "A meta package for Laravel 4 models.",
+    "description": "A meta package for Laravel 5 models. Forked for Tighten Co.",
     "keywords": ["laravel", "meta", "metas", "metable", "model", "eloquent"],
     "authors": [
         {
@@ -10,15 +10,11 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "~4.1"
+        "illuminate/support": "~5.0"
     },
     "autoload": {
-        "classmap": [
-            "src/migrations",
-            "src/commands"
-        ],
-        "psr-0": {
-            "Mmanos\\Metable\\": "src/"
+        "psr-4": {
+            "Mmanos\\Metable\\": "src/Mmanos/Metable/"
         }
     },
     "minimum-stability": "stable",

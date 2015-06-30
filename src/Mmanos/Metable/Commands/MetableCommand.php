@@ -1,4 +1,4 @@
-<?php namespace Mmanos\Metable;
+<?php namespace Mmanos\Metable\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
@@ -13,14 +13,14 @@ class MetableCommand extends Command
 	 * @var string
 	 */
 	protected $name = 'laravel-metable:metable';
-	
+
 	/**
 	 * The console command description.
 	 *
 	 * @var string
 	 */
 	protected $description = 'Create a migration for a metable content table';
-	
+
 	/**
 	 * Execute the console command.
 	 *
@@ -31,10 +31,10 @@ class MetableCommand extends Command
 		$full_migration_path = $this->createBaseMigration();
 		file_put_contents($full_migration_path, $this->getMigrationStub());
 		$this->info('Migration created successfully!');
-		
-		$this->call('dump-autoload');
+
+		$this->call('optimize');
 	}
-	
+
 	/**
 	 * Create a base migration file.
 	 *
@@ -43,12 +43,12 @@ class MetableCommand extends Command
 	protected function createBaseMigration()
 	{
 		$name = 'create_' . $this->argument('table') . '_table';
-		
-		$path = $this->laravel['path'].'/database/migrations';
-		
+
+		$path = base_path('database/migrations');
+
 		return $this->laravel['migration.creator']->create($name, $path);
 	}
-	
+
 	/**
 	 * Get the contents of the migration stub.
 	 *
@@ -56,18 +56,18 @@ class MetableCommand extends Command
 	 */
 	protected function getMigrationStub()
 	{
-		$stub = file_get_contents(__DIR__.'/../Mmanos/Metable/Stubs/MetableMigration.stub.php');
-		
+		$stub = file_get_contents(__DIR__.'/../Stubs/MetableMigration.stub.php');
+
 		$stub = str_replace('{{table}}', $this->argument('table'), $stub);
 		$stub = str_replace(
 			'{{class}}',
 			'Create' . Str::studly($this->argument('table')) . 'Table',
 			$stub
 		);
-		
+
 		return $stub;
 	}
-	
+
 	/**
 	 * Get the console command arguments.
 	 *
