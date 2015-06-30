@@ -5,33 +5,33 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class {{class}} extends Eloquent
 {
-	use SoftDeletes;
+    use SoftDeletes;
 
-	/**
-	 * The table name for this model.
-	 *
-	 * @var string
-	 */
-	protected $table = '{{table}}';
+    /**
+     * The table name for this model.
+     *
+     * @var string
+     */
+    protected $table = '{{table}}';
 
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = array('deleted_at');
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = array('deleted_at');
 
-	/**
-	 * The attributes that aren't mass assignable.
-	 *
-	 * @var array
-	 */
-	protected $guarded = array('id');
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
+    protected $guarded = array('id');
 
-	/**
-	 * The dates array.
-	 *
-	 * @var array
-	 */
-	protected $dates = array('deleted_at');
+    /**
+     * The dates array.
+     *
+     * @var array
+     */
+    protected $dates = array('deleted_at');
 }
