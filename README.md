@@ -75,7 +75,7 @@ Then you need to specify the meta model as well as the metable table to use with
 ```php
 class User extends Eloquent
 {
-	protected $meta_model = 'Meta';
+	protected $meta_model = 'App\Meta';
 	protected $metable_table = 'user_metas';
 }
 ```
