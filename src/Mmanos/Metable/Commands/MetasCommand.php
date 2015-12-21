@@ -114,7 +114,7 @@ class MetasCommand extends Command
      */
     protected function getModelStub()
     {
-        $stub = file_get_contents(__DIR__.'/../Mmanos/Metable/Stubs/MetaModel.stub.php');
+        $stub = file_get_contents(__DIR__.'/../Stubs/MetaModel.stub.php');
 
         $name_parts = explode('_', $this->tableName());
         $namespace = '';
